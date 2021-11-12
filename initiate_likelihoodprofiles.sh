@@ -1,0 +1,20 @@
+python3 EZ_likelihoodprofile_inflated.py Alpha1 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Eta2 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Epsilon 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Lambda 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Alpha2 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Alpha3 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Delta 15 200 &
+python3 EZ_likelihoodprofile_inflated.py I 15 200 &
+python3 EZ_likelihoodprofile_inflated.py A 15 200 &
+python3 EZ_likelihoodprofile_inflated.py M1 15 200 &
+python3 EZ_likelihoodprofile_inflated.py M2 15 200 &
+python3 EZ_likelihoodprofile_inflated.py S 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Xi 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Eta1 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Psi 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Omega1 15 200 &
+python3 EZ_likelihoodprofile_inflated.py Omega2 15 200 &
+python3 EZ_likelihoodprofile_inflated.py V 15 200 &
+python3 EZ_likelihoodprofile_inflated.py sigmaGamma 15 200 &
+python3 EZ_likelihoodprofile_inflated.py pF 15 200

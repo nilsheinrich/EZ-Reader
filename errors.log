@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "EZ_likelihoodprofile_inflated.py", line 174, in <module>
+    LL_table['sLL'] = LL_table.applymap(lambda x: EZ_loglik(x))
+  File "/Users/Nils/Documents/ez-reader/EZ/env_from__make_env/lib/python3.7/site-packages/pandas/core/frame.py", line 7605, in applymap
+    return self.apply(infer)
+  File "/Users/Nils/Documents/ez-reader/EZ/env_from__make_env/lib/python3.7/site-packages/pandas/core/frame.py", line 7548, in apply
+    return op.get_result()
+  File "/Users/Nils/Documents/ez-reader/EZ/env_from__make_env/lib/python3.7/site-packages/pandas/core/apply.py", line 180, in get_result
+    return self.apply_standard()
+  File "/Users/Nils/Documents/ez-reader/EZ/env_from__make_env/lib/python3.7/site-packages/pandas/core/apply.py", line 271, in apply_standard
+    results, res_index = self.apply_series_generator()
+  File "/Users/Nils/Documents/ez-reader/EZ/env_from__make_env/lib/python3.7/site-packages/pandas/core/apply.py", line 300, in apply_series_generator
+    results[i] = self.f(v)
+  File "/Users/Nils/Documents/ez-reader/EZ/env_from__make_env/lib/python3.7/site-packages/pandas/core/frame.py", line 7603, in infer
+    return lib.map_infer(x.astype(object)._values, func)
+  File "pandas/_libs/lib.pyx", line 2402, in pandas._libs.lib.map_infer
+  File "EZ_likelihoodprofile_inflated.py", line 174, in <lambda>
+    LL_table['sLL'] = LL_table.applymap(lambda x: EZ_loglik(x))
+  File "EZ_likelihoodprofile_inflated.py", line 28, in EZ_loglik
+    loglik = calc_loglik(fixations)
+  File "EZ_likelihoodprofile_inflated.py", line 40, in calc_loglik
+    s_star = groups_y_star.apply(this_metric, ancorp).to_frame("stat")#.reset_index()
+  File "/Users/Nils/Documents/ez-reader/EZ/env_from__make_env/lib/python3.7/site-packages/pandas/core/generic.py", line 5139, in __getattr__
+    return object.__getattribute__(self, name)
+AttributeError: 'DataFrame' object has no attribute 'to_frame'
