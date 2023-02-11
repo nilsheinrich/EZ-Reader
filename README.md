@@ -14,4 +14,4 @@ For a thorough documentation of the code, please read the Lab_Report.pdf
 3) run env_from__make_env/bin/activate within your shell  - this will source the virtual environment (a necessary step), now you are ready to go
 4) run the python script save_single_run  - it will use the default values for the free parameters as well as the default corpus to simulate a single reading of this corpus of sentences
 
-the resulting tmp.txt file will hold the fixation data of the simulated run
+the resulting tmp.txt file (in Data) will hold the fixation data of the simulated run
