@@ -13,4 +13,4 @@ parameters = load_parameters("Data/parameters.txt")
 
 fixations = run_EZReader(parameters, corpus, NRuns=500, timeout=300)
 
-fixations.to_csv("s_500.txt", sep="\t")
+#fixations.to_csv("s_500.txt", sep="\t")

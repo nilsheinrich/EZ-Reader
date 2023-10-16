@@ -110,17 +110,17 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
                 # Identify processing w/ shortest duration:
                 minProcessDuration = activeProcesses[0].dur
                 minProcessID = 0
-                for i in range(len(activeProcesses)):
-                    if activeProcesses[i].dur < minProcessDuration:
-                        minProcessDuration = activeProcesses[i].dur
+                for i, activeProcess in enumerate(activeProcesses):
+                    if activeProcess.dur < minProcessDuration:
+                        minProcessDuration = activeProcess.dur
                         minProcessID = i
 
                 # Store attributes of shortest process:
                 completeProcess = activeProcesses.pop(minProcessID)
 
                 # Decrement all remaining process durations:
-                for i in range(len(activeProcesses)):
-                    activeProcesses[i].dur -= completeProcess.dur
+                for activeProcess in activeProcesses:
+                    activeProcess.dur -= completeProcess.dur
 
                 # Increase fixation duration (except if saccade ongoing):
                 if completeProcess.name != "S":
@@ -133,19 +133,19 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
                 # PRE-ATTENTIVE VISUAL PROCESSING (V):
                 if completeProcess.name == "V":
                     # Adjust L1 rate:
-                    for i in range(len(activeProcesses)):
-                        if activeProcesses[i].name == "L1":
-                            activeProcesses[i].dur /= rate  # getting old rate out
+                    for activeProcess in activeProcesses:
+                        if activeProcess == "L1":
+                            activeProcess.dur /= rate
                             rate = p.calcRate(parameters, sentence.word(WN), f.pos)
-                            activeProcesses[i].dur *= rate  # adding new rate
+                            activeProcess.dur *= rate
 
                 # FAMILIARITY CHECK (L1):
                 elif completeProcess.name == "L1":
 
                     # Determine if integration is on-going for previous word:
                     ongoingI = False
-                    for i in range(len(activeProcesses)):
-                        if activeProcesses[i].name == "I" and activeProcesses[i].wn == (WN - 1):
+                    for activeProcess in activeProcesses:
+                        if activeProcess.name == "I" and activeProcess.wn == (WN - 1):
                             ongoingI = True
 
                     # Start L2:
@@ -164,10 +164,10 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
                     integrationFail = False
                     integrationFail_wn = 0  # integration failure word
 
-                    for i in reversed(range(len(activeProcesses))):
-                        if activeProcesses[i].name == "I":
-                            integrationFail_wn = activeProcesses[i].wn
-                            del activeProcesses[i]
+                    for activeProcess in reversed(activeProcesses):
+                        if activeProcess.name == "I":
+                            integrationFail_wn = activeProcess.wn
+                            del activeProcess
 
                     # Prohibit integration failure from potentially happening twice on a word.
                     if integrationFail_wn > 0 and not integrationFailure[integrationFail_wn - 1]:  # -1 since array index starts at 0
@@ -182,12 +182,13 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
                         # (i.e., A and L1 cannot be ongoing).
 
                         # Start A:
-                        p = Process.initializeA(parameters, WN)
-                        activeProcesses.append(p)
+                        if WN < number_of_words:
+                            p = Process.initializeA(parameters, WN)
+                            activeProcesses.append(p)
 
                         # Cancel any pending M1 & start M1:
-                        p = Process.initializeM1(parameters, activeProcesses, f.pos, sentence.word(WN).OVP, WN)
-                        activeProcesses.append(p)
+                            p = Process.initializeM1(parameters, activeProcesses, f.pos, sentence.word(WN).OVP, WN)
+                            activeProcesses.append(p)
 
                     # Integration was successful:
                     else:
@@ -213,21 +214,21 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
                         integrationFailure[completeProcess.wn - 1] = True
 
                         # Stop A, L1, and/or L2:
-                        for i in reversed(range(len(activeProcesses))):
-                            if activeProcesses[i].name in ["A", "L1", "L2"]:
-                                del activeProcesses[i]
+                        for activeProcess in reversed(activeProcesses):
+                            if activeProcess.name in ["A", "L1", "L2"]:
+                                del activeProcess
 
                         # Start A:
-                        WN = completeProcess.wn  # i.e., shift attention to source of integration difficulty
-                        p = Process.initializeA(parameters, WN)
-                        activeProcesses.append(p)
+                        if WN < number_of_words:
+                            WN = completeProcess.wn  # i.e., shift attention to source of integration difficulty
+                            p = Process.initializeA(parameters, WN)
+                            activeProcesses.append(p)
 
-                        # Cancel any pending M1 & start M1:
-                        p = Process.initializeM1(parameters, activeProcesses, f.pos, sentence.word(WN).OVP, WN)
-                        activeProcesses.append(p)
+                            # Cancel any pending M1 & start M1:
+                            p = Process.initializeM1(parameters, activeProcesses, f.pos, sentence.word(WN).OVP, WN)
+                            activeProcesses.append(p)
 
                     else:
-
                         if completeProcess.wn == number_of_words:
                             sentenceDone = True
 
@@ -239,11 +240,12 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
 
                     # Determine if integration is on-going for previous word:
                     ongoingI = False
-                    for i in range(len(activeProcesses)):
-                        if activeProcesses[i].name == "[I]" and activeProcesses[i].wn == WN - 1:
+                    for activeProcess in activeProcesses:
+                        if activeProcess.name == "[I]" and activeProcess.wn == WN - 1:
                             ongoingI = True
 
                     # Start L1:
+                    print(f"ongoingI: {ongoingI}; word:{sentence.word(WN)}; word_number: {WN}; fixation_location_word: {f.word}")
                     p = Process.initializeL1(parameters, sentence.word(WN), ongoingI)
                     rate = p.calcRate(parameters, sentence.word(WN), f.pos)
                     p.dur *= rate
