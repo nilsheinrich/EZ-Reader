@@ -108,21 +108,20 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
             while not sentenceDone:
 
                 # Identify processing w/ shortest duration:
-                completeProcess = min(activeProcesses, key=lambda activeProcess: activeProcess.dur)
-                activeProcesses.remove(completeProcess)
+                #completeProcess = min(activeProcesses, key=lambda activeProcess: activeProcess.dur)
+                #activeProcesses.remove(completeProcess)
                 #print(completeProcess.dur)
                 #print(f"list: {activeProcesses}, list_after_pop: {activeProcesses.remove(completeProcess)}")
 
-
-                #minProcessDuration = activeProcesses[0].dur
-                #minProcessID = 0
-                #for i, activeProcess in enumerate(activeProcesses):
-                #    if activeProcess.dur < minProcessDuration:
-                #        minProcessDuration = activeProcess.dur
-                #        minProcessID = i
+                minProcessDuration = activeProcesses[0].dur
+                minProcessID = 0
+                for i, activeProcess in enumerate(activeProcesses):
+                    if activeProcess.dur < minProcessDuration:
+                        minProcessDuration = activeProcess.dur
+                        minProcessID = i
 
                 # Store attributes of shortest process:
-                #completeProcess = activeProcesses.pop(minProcessID)
+                completeProcess = activeProcesses.pop(minProcessID)
 
                 # Decrement all remaining process durations:
                 for activeProcess in activeProcesses:
@@ -140,7 +139,7 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
                 if completeProcess.name == "V":
                     # Adjust L1 rate:
                     for activeProcess in activeProcesses:
-                        if activeProcess == "L1":
+                        if activeProcess.name == "L1":
                             activeProcess.dur /= rate
                             rate = p.calcRate(parameters, sentence.word(WN), f.pos)
                             activeProcess.dur *= rate
