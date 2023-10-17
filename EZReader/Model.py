@@ -108,15 +108,21 @@ def run_EZReader(parameters, corpus, NRuns=1, sentences="all", timeout=20, verbo
             while not sentenceDone:
 
                 # Identify processing w/ shortest duration:
-                minProcessDuration = activeProcesses[0].dur
-                minProcessID = 0
-                for i, activeProcess in enumerate(activeProcesses):
-                    if activeProcess.dur < minProcessDuration:
-                        minProcessDuration = activeProcess.dur
-                        minProcessID = i
+                completeProcess = min(activeProcesses, key=lambda activeProcess: activeProcess.dur)
+                activeProcesses.remove(completeProcess)
+                #print(completeProcess.dur)
+                #print(f"list: {activeProcesses}, list_after_pop: {activeProcesses.remove(completeProcess)}")
+
+
+                #minProcessDuration = activeProcesses[0].dur
+                #minProcessID = 0
+                #for i, activeProcess in enumerate(activeProcesses):
+                #    if activeProcess.dur < minProcessDuration:
+                #        minProcessDuration = activeProcess.dur
+                #        minProcessID = i
 
                 # Store attributes of shortest process:
-                completeProcess = activeProcesses.pop(minProcessID)
+                #completeProcess = activeProcesses.pop(minProcessID)
 
                 # Decrement all remaining process durations:
                 for activeProcess in activeProcesses:

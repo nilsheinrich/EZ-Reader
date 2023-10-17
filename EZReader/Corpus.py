@@ -50,7 +50,7 @@ class sentence():
         elif type(word_number) == list:
             return [self.words[wn - 1] if self.index_ok(wn) else custom_raise() for wn in word_number]
         else:
-            print(f"word_number: {word_number}; type: {type(word_number)}; self.index_ok: {self.index_ok(word_number)}")
+            # print(f"word_number: {word_number}; type: {type(word_number)}; self.index_ok: {self.index_ok(word_number)}")
             raise TypeError()
 
     def index_ok(self, ix):
